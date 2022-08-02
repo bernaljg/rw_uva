@@ -45,6 +45,8 @@ class RetrievalPipeline:
 
         self.relevant_auis = self.ontology.relevant_auis
 
+        self.load_retrievers()
+
         # Make Unique Directory for this retrieval procedure
         configs = {'UMLS Version': ontology.version,
                    'UMLS Directory': ontology.directory,
