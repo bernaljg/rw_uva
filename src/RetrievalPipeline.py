@@ -160,9 +160,9 @@ class RetrievalPipeline:
         aui_recall.to_csv('{}/{}_aui_recall_complete.csv'.format(self.output_dir, ret_name))
         cui_recall.to_csv('{}/{}_cui_recall_complete.csv'.format(self.output_dir, ret_name))
 
-        aui_mean_row = aui_recall.mean()
+        aui_mean_row = aui_recall.agg('mean')
         cui_mean_row = cui_recall.mean()
-        metrics = pd.concat([aui_mean_row, cui_mean_row])
+        metrics = pd.DataFrame([aui_mean_row, cui_mean_row])
         metrics.index = ['{}_AUI_metrics'.format(ret_name), '{}_CUI_metrics'.format(ret_name)]
         metrics.to_csv('{}/{}_recall_summary.csv'.format(self.output_dir, ret_name))
 
