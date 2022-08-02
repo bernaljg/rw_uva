@@ -57,10 +57,13 @@ class RetrievalPipeline:
         retrieval_directories = glob(output_dir + '/*')
 
         for dir in retrieval_directories:
-            prev_config = json.load(open(dir,'r'))
+            prev_config = json.load(open('{}/config.json'.format(dir),'r'))
 
             if equivalent_dict(prev_config, configs):
-                assert print('Configuration Already Done and Saved')
+                if os.path.exists('{}/done.json'.format(dir)):
+                    assert print('Configuration Already Done and Saved')
+                else:
+                    print('Previous Run Stopped. Running Again.')
 
         self.output_dir = output_dir + '/{}'.format(len(retrieval_directories))
         os.makedirs(self.output_dir)
@@ -100,6 +103,8 @@ class RetrievalPipeline:
                 self.combine_candidates(new_candidate_dict, ret.add_on_top)
 
         self.eval_and_save_candidates(self.retrieved_candidates, 'full_pipeline')
+
+        json.dump({'DONE':True}, open(self.output_dir + '/done.json', 'w'))
 
     def evaluate_candidate_retrieval(self,
                                      mode,

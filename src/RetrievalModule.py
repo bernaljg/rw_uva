@@ -63,16 +63,17 @@ class RetrievalModule:
             if os.path.exists(retriever_name):
                 self.aui_vector_dict = pickle.load(open(retriever_name, 'rb'))
             else:
-                print('No Pre-Computed Vectors.')
+                print('No Pre-Computed Vectors. Confirming PLM Model.')
 
                 try:
                     self.plm = AutoModel.from_pretrained(retriever_name)
                 except:
                     assert False, print('Invalid Retriever Name. Check Documentation.')
 
-                print('Computing AUI Vectors. Make sure run is equipped with at least 1 GPU.')
                 aui_vectors = self.get_plm_vectors()
                 self.populate_vector_dictionary(aui_vectors)
+
+                print('Vectors Loaded.')
 
     def retrieve(self):
         # If retriever name is not in global priority dictionary then it relies on dense retrieval.
@@ -95,6 +96,8 @@ class RetrievalModule:
 
         if not (os.path.exists(retrieval_name_dir)):
             os.makedirs(retrieval_name_dir)
+
+            print('Computing AUI Vectors. Make sure this process is equipped with at least 1 GPU.')
             self.compute_plm_vectors(retrieval_name_dir)
 
         return self.load_plm_vectors(retrieval_name_dir)
@@ -126,6 +129,7 @@ class RetrievalModule:
         assert os.path.exists(retrieval_name_dir), print(
             'No Vectors Saved. Check for naming errors.')
 
+        print('Loading PLM Vectors.')
         files = glob(retrieval_name_dir + '/*')
 
         for i in range(len(files)):
