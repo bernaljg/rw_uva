@@ -7,6 +7,7 @@ import time
 from UMLS import *
 from RetrievalModule import *
 
+from ipdb import ipdb
 from glob import glob
 
 
@@ -152,6 +153,8 @@ class RetrievalPipeline:
 
         aui_recall = self.evaluate_candidate_retrieval(mode='AUI')
         cui_recall = self.evaluate_candidate_retrieval(mode='CUI')
+
+        ipdb.set_trace()
 
         aui_recall.to_csv('{}/{}_aui_recall_complete.csv'.format(self.output_dir, ret_name))
         cui_recall.to_csv('{}/{}_cui_recall_complete.csv'.format(self.output_dir, ret_name))
