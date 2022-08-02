@@ -55,7 +55,7 @@ class RetrievalPipeline:
         retrieval_directories = glob(output_dir + '/*')
 
         for dir in retrieval_directories:
-            prev_config = json.load(dir)
+            prev_config = json.load(open(dir,'r'))
 
             if equivalent_dict(prev_config, configs):
                 assert print('Configuration Already Done and Saved')
@@ -63,7 +63,7 @@ class RetrievalPipeline:
         self.output_dir = output_dir + '/{}'.format(len(retrieval_directories))
         os.makedirs(self.output_dir)
 
-        json.dump(configs, self.output_dir + '/config.json')
+        json.dump(configs, open(self.output_dir + '/config.json', 'w'))
 
     def load_retrievers(self):
         self.retrievers = []
