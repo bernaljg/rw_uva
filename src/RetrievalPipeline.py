@@ -26,7 +26,7 @@ class RetrievalPipeline:
     def __init__(self,
                  original_auis_filename,
                  new_auis_filename,
-                 ontology: UMLS,
+                 ontology,
                  output_dir,
                  maximum_candidates_per_retriever,
                  retriever_names
