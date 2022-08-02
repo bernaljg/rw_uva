@@ -27,7 +27,7 @@ retrieval_modules_types_priority = {
 }
 
 # TODO: Change hard-coded vector output directory
-VECTOR_DIR = '/data/Bodenreider_UMLS_DL/Interns/Bernal/plm_vectors'
+VECTOR_DIR = '/data/Bodenreider_UMLS_DL/Interns/Bernal/rw_uva/data/plm_vectors'
 
 
 class RetrievalModule:
