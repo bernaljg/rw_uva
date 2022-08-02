@@ -36,7 +36,7 @@ import sys
 from UMLS import UMLS
 
 
-def ___main__():
+def main():
     umls_dir = sys.argv[1]
     umls_version = sys.argv[2]
     original_auis_filename = sys.argv[3]
@@ -55,3 +55,6 @@ def ___main__():
                       None,
                       None
                       )
+
+if __name__ == "__main__":
+    main()
