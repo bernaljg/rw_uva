@@ -152,8 +152,6 @@ class RetrievalPipeline:
     def eval_and_save_candidates(self, candidate_dict, ret_name):
         ret_name = ret_name.replace('/', '_')  # In case using filename
 
-        ipdb.set_trace()
-
         aui_recall = self.evaluate_candidate_retrieval(candidate_dict, mode='AUI')
         cui_recall = self.evaluate_candidate_retrieval(candidate_dict, mode='CUI')
 
