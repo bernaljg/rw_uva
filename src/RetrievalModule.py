@@ -360,14 +360,14 @@ class RetrievalModule:
 
             # Only get terms with source synonymy (Some terms have no SCUI)
             if scui.split('|||')[0] != '':
-                source_syns = list(set(self.ontology.original_only_scui2auis[scui]))
+                source_syns = list(set(self.ontology.original_only_scui2auis.get(scui,[])))
 
                 # For each source synonym, get all its originally defined synonyms and add them to the candidate list
                 for source_syn_aui in source_syns:
                     source_syn_lui = self.ontology.aui2lui.get(source_syn_aui, None)
 
                     if source_syn_lui is not None:
-                        lui_auis = self.ontology.original_only_lui2auis[source_syn_lui]
+                        lui_auis = self.ontology.original_only_lui2auis.get(source_syn_lui, [])
                         all_syns.extend(lui_auis)
 
             # Expanding from LUIs
@@ -378,7 +378,7 @@ class RetrievalModule:
                 lui_syn_scui = self.ontology.aui2scui.get(lui_syn_aui, None)
 
                 if lui_syn_scui is not None:
-                    source_syn_auis = self.ontology.original_only_scui2auis[lui_syn_scui]
+                    source_syn_auis = self.ontology.original_only_scui2auis.get(lui_syn_scui)
                     all_syns.extend(source_syn_auis)
 
             sorted_candidate_dictionary[aui] = all_syns
@@ -397,16 +397,14 @@ class RetrievalModule:
 
             if scui.split('|||')[0] != '':
                 # Only get terms with source synonymy (Some terms have no SCUI)
-                source_syns = list(set(self.ontology.original_only_scui2auis[scui]))
+                source_syns = list(set(self.ontology.original_only_scui2auis.get(scui, [])))
 
                 # For each source synonym, get all its originally defined synonyms and add them to the candidate list
                 all_syns = []
                 for source_syn_aui in source_syns:
-                    source_syn_cui = self.ontology.aui2cui.get(source_syn_aui, None)
-
-                    if source_syn_cui is not None:
-                        original_syns = self.ontology.original_only_cui2auis[source_syn_cui]
-                        all_syns.extend(original_syns)
+                    source_syn_cui = self.ontology.aui2cui[source_syn_aui]
+                    original_syns = self.ontology.original_only_cui2auis.get(source_syn_cui, [])
+                    all_syns.extend(original_syns)
             else:
                 all_syns = []
 
@@ -426,7 +424,7 @@ class RetrievalModule:
 
             if scui.split('|||')[0] != '':
                 # Only get terms with source synonymy (Some terms have no SCUI)
-                source_syns = list(set(self.ontology.original_only_scui2auis[scui]))
+                source_syns = list(set(self.ontology.original_only_scui2auis.get(scui,[])))
             else:
                 source_syns = []
 
