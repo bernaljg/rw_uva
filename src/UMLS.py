@@ -166,7 +166,7 @@ class UMLS:
                 if (time.time() - current_time) > 5:
                     print(tup)
 
-    def get_original_ontology_synonyms(self):
+    def get_original_ontology_synonyms(self, original_auis):
         """
         Build CUI to AUI set, SCUI to AUI and LUI to AUI set mappings
         which only contain AUIs from the "original" ontology.
@@ -176,7 +176,7 @@ class UMLS:
         self.original_only_scui2auis = {}
         self.original_only_lui2auis = {}
 
-        for aui in tqdm(self.original_auis):
+        for aui in tqdm(original_auis):
             cui = self.aui2cui[aui]
             scui = self.aui2scui[aui]
             lui = self.aui2lui[aui]

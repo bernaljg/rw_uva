@@ -47,7 +47,7 @@ class RetrievalPipeline:
 
         if self.ontology.original_only_cui2auis is None:
             print('Populating original only synonyms before evaluation.')
-            self.ontology.get_original_ontology_synonyms()
+            self.ontology.get_original_ontology_synonyms(self.original_auis)
 
         self.load_retrievers()
 
