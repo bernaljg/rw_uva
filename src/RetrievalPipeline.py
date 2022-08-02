@@ -7,7 +7,7 @@ import time
 from UMLS import *
 from RetrievalModule import *
 
-from ipdb import ipdb
+import ipdb
 from glob import glob
 
 
