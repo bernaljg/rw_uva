@@ -46,6 +46,10 @@ class UMLS:
         self.aui2lui = {}
         self.lui2auis = {}
 
+        self.original_only_lui2auis = None
+        self.original_only_scui2auis = None
+        self.original_only_cui2auis = None
+
         # Loading UMLS Info from File
         self.raw_load_umls(umls_directory, version)
         self.get_relevant_aui_set()
