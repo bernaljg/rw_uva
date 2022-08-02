@@ -147,6 +147,8 @@ class RetrievalPipeline:
 
                 recall_array.append(recalls)
 
+        ipdb.set_trace()
+
         return pd.DataFrame(recall_array, index=new_auis, columns=['R@{}'.format(n) for n in recall_at])
 
     def eval_and_save_candidates(self, candidate_dict, ret_name):
@@ -154,8 +156,6 @@ class RetrievalPipeline:
 
         aui_recall = self.evaluate_candidate_retrieval(mode='AUI')
         cui_recall = self.evaluate_candidate_retrieval(mode='CUI')
-
-        ipdb.set_trace()
 
         aui_recall.to_csv('{}/{}_aui_recall_complete.csv'.format(self.output_dir, ret_name))
         cui_recall.to_csv('{}/{}_cui_recall_complete.csv'.format(self.output_dir, ret_name))
