@@ -45,6 +45,10 @@ class RetrievalPipeline:
 
         self.relevant_auis = self.ontology.relevant_auis
 
+        if self.ontology.original_only_cui2auis is None:
+            print('Populating original only synonyms before evaluation.')
+            self.ontology.get_original_ontology_synonyms()
+
         self.load_retrievers()
 
         # Make Unique Directory for this retrieval procedure
@@ -109,10 +113,6 @@ class RetrievalPipeline:
     def evaluate_candidate_retrieval(self,
                                      mode,
                                      recall_at=[1, 5, 10, 50, 100, 200, 500, 1000, 2000]):
-
-        if self.ontology.original_only_cui2auis is None:
-            print('Populating original only synonyms before evaluation.')
-            self.ontology.get_original_ontology_synonyms()
 
         new_auis = []
         recall_array = []
