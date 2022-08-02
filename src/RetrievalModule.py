@@ -123,13 +123,13 @@ class RetrievalModule:
     def load_plm_vectors(self, retrieval_name_dir):
         aui_vectors = []
 
-        assert os.path.exists(VECTOR_DIR + '/' + retrieval_name_dir), print(
+        assert os.path.exists(retrieval_name_dir), print(
             'No Vectors Saved. Check for naming errors.')
 
-        files = glob(VECTOR_DIR + '/' + retrieval_name_dir + '/*')
+        files = glob(retrieval_name_dir + '/*')
 
         for i in range(len(files)):
-            i_files = glob(VECTOR_DIR + '/' + retrieval_name_dir + '/*_{}.p'.format(i))
+            i_files = glob(retrieval_name_dir + '/*_{}.p'.format(i))
             if len(i_files) != 1:
                 break
             else:
