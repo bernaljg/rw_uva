@@ -17,7 +17,6 @@ import gc
 import subprocess
 import time
 
-from RetrievalPipeline import *
 from transformers import AutoModel, AutoTokenizer
 
 retrieval_modules_types_priority = {
@@ -37,7 +36,7 @@ class RetrievalModule:
 
     def __init__(self,
                  retriever_name,
-                 retriever_pipeline: RetrievalPipeline):
+                 retriever_pipeline):
         """
         Args:
             retriever_name: Retrieval names can be one of 3 types
