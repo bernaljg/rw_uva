@@ -38,10 +38,6 @@ class RetrievalPipeline:
         self.original_auis, self.new_auis = self.ontology.get_relevant_aui_set(original_auis_filename,
                                                                                new_auis_filename)
 
-        # Load Original and New AUIs (Synonyms obtained only from AUIs in these 2 sets)
-        self.ontology.reset_mappings()
-        self.ontology.create_mappings()
-
         self.maximum_candidates_per_retriever = maximum_candidates_per_retriever
         self.retriever_names = retriever_names
 

@@ -19,15 +19,7 @@ class UMLS:
         # Load all UMLS Info Necessary
         self.aui_info = []
 
-        self.reset_mappings()
 
-        # Loading UMLS Info from File
-        self.raw_load_umls(umls_directory, version)
-
-        self.get_relevant_aui_set()
-        self.create_mappings()
-
-    def reset_mappings(self):
         # CUI-AUI Mapping
         self.cui2auis = {}
         self.aui2cui = {}
@@ -53,6 +45,11 @@ class UMLS:
         # AUI-LUI Mapping
         self.aui2lui = {}
         self.lui2auis = {}
+
+        # Loading UMLS Info from File
+        self.raw_load_umls(umls_directory, version)
+        self.get_relevant_aui_set()
+        self.create_mappings()
 
     def raw_load_umls(self,
                       umls_directory,
