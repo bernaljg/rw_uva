@@ -103,7 +103,6 @@ class RetrievalPipeline:
         for ret_name, ret in zip(self.retriever_names, self.retrievers):
 
             if ret_name not in exclude:
-                ipdb.set_trace()
                 new_candidate_dict = ret.retrieve()
                 self.eval_and_save_candidates(new_candidate_dict, ret_name)
                 self.combine_candidates(new_candidate_dict, ret.add_on_top)
@@ -113,13 +112,14 @@ class RetrievalPipeline:
         json.dump({'DONE':True}, open(self.output_dir + '/done.json', 'w'))
 
     def evaluate_candidate_retrieval(self,
+                                     candidate_dict,
                                      mode,
                                      recall_at=[1, 5, 10, 50, 100, 200, 500, 1000, 2000]):
 
         new_auis = []
         recall_array = []
 
-        for new_aui, candidates in tqdm(self.retrieved_candidates.items()):
+        for new_aui, candidates in tqdm(candidate_dict.items()):
             new_auis.append(new_aui)
 
             cui = self.ontology.aui2cui[new_aui]
@@ -147,15 +147,13 @@ class RetrievalPipeline:
 
                 recall_array.append(recalls)
 
-        ipdb.set_trace()
-
         return pd.DataFrame(recall_array, index=new_auis, columns=['R@{}'.format(n) for n in recall_at])
 
     def eval_and_save_candidates(self, candidate_dict, ret_name):
         ret_name = ret_name.replace('/', '_')  # In case using filename
 
-        aui_recall = self.evaluate_candidate_retrieval(mode='AUI')
-        cui_recall = self.evaluate_candidate_retrieval(mode='CUI')
+        aui_recall = self.evaluate_candidate_retrieval(candidate_dict, mode='AUI')
+        cui_recall = self.evaluate_candidate_retrieval(candidate_dict, mode='CUI')
 
         aui_recall.to_csv('{}/{}_aui_recall_complete.csv'.format(self.output_dir, ret_name))
         cui_recall.to_csv('{}/{}_cui_recall_complete.csv'.format(self.output_dir, ret_name))
