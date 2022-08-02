@@ -58,6 +58,7 @@ class UMLS:
                       umls_directory,
                       version):
 
+        print('Loading Raw MRCONSO Lines')
         # Download all MRCONSO
         with open('{}/{}-ACTIVE/META/MRCONSO.RRF'.format(umls_directory, version), 'r') as fp:
             pbar = tqdm(total=15000000)
@@ -110,11 +111,12 @@ class UMLS:
         original_auis = pickle.load(open(original_auis_filename, 'rb'))
         new_auis = pickle.load(open(new_auis_filename, 'rb'))
 
-        self.relevant_auis = set(original_auis.keys()).union(new_auis.keys())
+        self.relevant_auis = set(original_auis).union(new_auis)
 
         return original_auis, new_auis
 
     def create_mappings(self):
+        print('Creating mappings between concept IDs for easy access.')
 
         for tup in tqdm(self.aui_info):
             current_time = time.time()
@@ -123,7 +125,6 @@ class UMLS:
             cui = tup[1]
             string = tup[2]
             scui = tup[3] + '|||' + tup[4]  # Source CUI Uniqueness is confined to each source
-            source = tup[4]
             pref = (tup[5], tup[6])
             lang = tup[7]
             lui = tup[8]
