@@ -360,7 +360,7 @@ class RetrievalModule:
 
             # Only get terms with source synonymy (Some terms have no SCUI)
             if scui.split('|||')[0] != '':
-                source_syns = list(set(self.ontology.original_only_scui2auis.get(scui,[])))
+                source_syns = list(set(self.ontology.original_only_scui2auis.get(scui, [])))
 
                 # For each source synonym, get all its originally defined synonyms and add them to the candidate list
                 for source_syn_aui in source_syns:
@@ -371,7 +371,7 @@ class RetrievalModule:
                         all_syns.extend(lui_auis)
 
             # Expanding from LUIs
-            lui_syns = list(set(self.ontology.original_only_lui2auis[lui]))
+            lui_syns = list(set(self.ontology.original_only_lui2auis.get(lui, [])))
 
             # For each source synonym, get all its originally defined synonyms and add them to the candidate list
             for lui_syn_aui in lui_syns:
