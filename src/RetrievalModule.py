@@ -17,7 +17,7 @@ import gc
 import subprocess
 import time
 
-from RetrievalPipeline import RetrievalPipeline
+from RetrievalPipeline import *
 from transformers import AutoModel, AutoTokenizer
 
 retrieval_modules_types_priority = {
