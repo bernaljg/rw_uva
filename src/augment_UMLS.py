@@ -27,9 +27,7 @@ each new term.
 Outputs
 
 - Set of K nearest neighbors from original ontology for each new AUI or term.
-
 - AUI Based Recall @ 1,5,10,50,100,200,1000,2000
-
 - CUI Based Recall @ 1,5,10,50,100,200,1000,2000
 """
 
@@ -37,17 +35,23 @@ import os
 import sys
 from UMLS import UMLS
 
-def ___main__():
 
+def ___main__():
     umls_dir = sys.argv[1]
     umls_version = sys.argv[2]
     original_auis_filename = sys.argv[3]
     new_auis_filename = sys.argv[4]
     k = int(sys.argv[5])
     output_dir = sys.argv[6]
+    num_retriever_names = int(sys.argv[7])
+    retriever_names = sys.argv[8:8 + num_retriever_names]
 
     umls = UMLS(umls_dir, umls_version)
-    umls.augment_umls(original_auis_filename, new_auis_filename, )
-
-
-
+    umls.augment_umls(original_auis_filename,
+                      new_auis_filename,
+                      output_dir,
+                      retriever_names,
+                      k,
+                      None,
+                      None
+                      )
