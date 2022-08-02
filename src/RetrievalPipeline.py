@@ -164,4 +164,4 @@ class RetrievalPipeline:
         metrics.index = ['{}_AUI_metrics'.format(ret_name), '{}_CUI_metrics'.format(ret_name)]
         metrics.to_csv('{}/{}_recall_summary.csv'.format(self.output_dir, ret_name))
 
-        pickle.dump(candidate_dict, open('{}/{}_candidates.p'.format(self.output_dir, ret_name)))
+        pickle.dump(candidate_dict, open('{}/{}_candidates.p'.format(self.output_dir, ret_name),'wb'))
