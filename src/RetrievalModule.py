@@ -382,6 +382,11 @@ class RetrievalModule:
                     source_syn_auis = self.ontology.original_only_scui2auis.get(lui_syn_scui)
                     all_syns.extend(source_syn_auis)
 
+            all_syns = list(set(all_syns))
+            if len(all_syns) > self.retriever_pipeline.maximum_candidates_per_retriever:
+                print('Trimming Candidates')
+                all_syns = all_syns[:self.retriever_pipeline.maximum_candidates_per_retriever]
+
             sorted_candidate_dictionary[aui] = all_syns
 
         return sorted_candidate_dictionary
@@ -409,7 +414,7 @@ class RetrievalModule:
             else:
                 all_syns = []
 
-            sorted_candidate_dictionary[aui] = all_syns
+            sorted_candidate_dictionary[aui] = list(set(all_syns))
 
         return sorted_candidate_dictionary
 
@@ -429,6 +434,6 @@ class RetrievalModule:
             else:
                 source_syns = []
 
-            sorted_candidate_dictionary[aui] = source_syns
+            sorted_candidate_dictionary[aui] = list(set(source_syns))
 
         return sorted_candidate_dictionary

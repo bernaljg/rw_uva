@@ -61,6 +61,8 @@ class RetrievalPipeline:
                    'Maximum Candidates per Retriever': maximum_candidates_per_retriever}
         retrieval_directories = glob(output_dir + '/*')
 
+        new_directory_num = len(retrieval_directories)
+
         for dir in retrieval_directories:
             prev_config = json.load(open('{}/config.json'.format(dir),'r'))
 
@@ -69,8 +71,9 @@ class RetrievalPipeline:
                     assert print('Configuration Already Done and Saved')
                 else:
                     print('Previous Run Stopped. Running Again.')
+                    new_directory_num = dir.split('/')[-1]
 
-        self.output_dir = output_dir + '/{}'.format(len(retrieval_directories))
+        self.output_dir = output_dir + '/{}'.format(new_directory_num)
         os.makedirs(self.output_dir)
 
         json.dump(configs, open(self.output_dir + '/config.json', 'w'))
