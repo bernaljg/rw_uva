@@ -138,7 +138,7 @@ class RetrievalPipeline:
 
                     # Number of true positives in first n over the number of possible positive candidates
                     # (if n is less than the number of true synonyms it is impossible to correctly recall all of them)
-                    recall_at_n = len(true_pos) / min(len(true_syn), n)
+                    recall_at_n = len(true_pos) / len(true_syn)
                     recalls.append(recall_at_n)
 
                 recall_array.append(recalls)
