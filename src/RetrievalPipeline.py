@@ -103,6 +103,7 @@ class RetrievalPipeline:
         for ret_name, ret in zip(self.retriever_names, self.retrievers):
 
             if ret_name not in exclude:
+                print('Retrieving {} candidates.'.format(ret_name))
                 new_candidate_dict = ret.retrieve()
                 self.eval_and_save_candidates(new_candidate_dict, ret_name)
                 self.combine_candidates(new_candidate_dict, ret.add_on_top)
