@@ -354,7 +354,7 @@ class RetrievalModule:
 
         for aui in tqdm(self.retriever_pipeline.new_auis):
             scui = self.ontology.aui2scui[aui]
-            lui = self.ontology.aui2lui
+            lui = self.ontology.aui2lui[aui]
 
             # Expanding from SCUIs
             all_syns = []
@@ -370,8 +370,6 @@ class RetrievalModule:
                     if source_syn_lui is not None:
                         lui_auis = self.ontology.original_only_lui2auis.get(source_syn_lui, [])
                         all_syns.extend(lui_auis)
-
-            ipdb.set_trace()
 
             # Expanding from LUIs
             lui_syns = list(set(self.ontology.original_only_lui2auis.get(lui, [])))
