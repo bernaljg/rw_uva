@@ -16,6 +16,7 @@ import faiss
 import gc
 import subprocess
 import time
+import ipdb
 
 from transformers import AutoModel, AutoTokenizer
 
@@ -369,6 +370,8 @@ class RetrievalModule:
                     if source_syn_lui is not None:
                         lui_auis = self.ontology.original_only_lui2auis.get(source_syn_lui, [])
                         all_syns.extend(lui_auis)
+
+            ipdb.set_trace()
 
             # Expanding from LUIs
             lui_syns = list(set(self.ontology.original_only_lui2auis.get(lui, [])))
