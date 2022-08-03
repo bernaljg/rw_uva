@@ -74,7 +74,8 @@ class RetrievalPipeline:
                     new_directory_num = dir.split('/')[-1]
 
         self.output_dir = output_dir + '/{}'.format(new_directory_num)
-        os.makedirs(self.output_dir)
+        if not(os.path.exists(self.output_dir)):
+            os.makedirs(self.output_dir)
 
         json.dump(configs, open(self.output_dir + '/config.json', 'w'))
 
