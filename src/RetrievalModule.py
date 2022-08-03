@@ -378,13 +378,15 @@ class RetrievalModule:
             for lui_syn_aui in lui_syns:
                 lui_syn_scui = self.ontology.aui2scui.get(lui_syn_aui, None)
 
-                if lui_syn_scui is not None:
+                if lui_syn_scui is not None and lui_syn_scui.split('|||')[0] != '':
                     source_syn_auis = self.ontology.original_only_scui2auis.get(lui_syn_scui)
                     all_syns.extend(source_syn_auis)
 
             all_syns = list(set(all_syns))
+
             if len(all_syns) > self.retriever_pipeline.maximum_candidates_per_retriever:
                 print('Trimming Candidates')
+                ipdb.set_trace()
                 all_syns = all_syns[:self.retriever_pipeline.maximum_candidates_per_retriever]
 
             sorted_candidate_dictionary[aui] = all_syns
