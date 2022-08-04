@@ -87,6 +87,7 @@ class SynonymyDatasetManager:
         """
 
         if self.dataset_generation_done:
+            print('Loading Dataset.')
             self.aui_splits = pickle.load(open('{}/aui_splits.p'.format(self.output_dir), 'rb'))
         else:
             self.create_new_aui_info_df()
@@ -141,7 +142,7 @@ class SynonymyDatasetManager:
         if stratified_method == 'synonym_presence':
 
             #Splitting Based on CUIs
-            cui_num_syms_df = self.new_cuis_df[['cuis', 'num_original_syns']].drop_duplicates()
+            cui_num_syms_df = self.new_cuis_df[['cui', 'num_original_syns']].drop_duplicates()
             cui_num_syms_df['no_syms'] = [n == 0 for n in cui_num_syms_df.num_syms]
 
             train = []

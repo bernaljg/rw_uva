@@ -101,6 +101,7 @@ class RetrievalPipeline:
                        exclude=[]):
 
         if self.retrieval_done:
+            print('Loading Retrieval Candidates.')
             self.retrieved_candidates = pickle.load(open('{}/full_pipeline_candidates.p'.format(self.output_dir), 'rb'))
         else:
             for ret_name, ret in zip(self.retriever_names, self.retrievers):
