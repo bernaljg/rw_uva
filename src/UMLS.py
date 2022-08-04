@@ -243,7 +243,7 @@ class UMLS:
 
         # Create Classification Dataset Using Candidates Extracted (kNN on new AUIs)
         self.dataset_manager = SynonymyDatasetManager(self,
-                                                      self.retrieval_pipeline,
+                                                      self.retriever_pipeline,
                                                       self.retriever_pipeline.output_dir,
                                                       candidates_to_classify,
                                                       dev_perc,

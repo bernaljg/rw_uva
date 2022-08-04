@@ -306,16 +306,12 @@ class RetrievalModule:
             stacked_D.append(D)
             stacked_I.append(I)
 
-        # In[ ]:
-
         del index_chunk_D
         del index_chunk_I
         gc.collect()
 
         stacked_D = np.hstack(stacked_D)
         stacked_I = np.hstack(stacked_I)
-
-        # In[ ]:
 
         full_sort_I = []
         full_sort_D = []

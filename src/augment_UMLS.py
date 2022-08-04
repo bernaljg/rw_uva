@@ -4,6 +4,10 @@ the Huggingface model library or saved locally.
 
 Inputs
 
+- UMLS Directory: Path to the 'META' directory which stores UMLS tables.
+
+- UMLS Version: Version of UMLS which contains all the AUIs referred to by the AUI sets.
+
 - Original AUI Set: Set of AUIs to be used as the original ontology (the ontology to which new
 AUIs will be attached).
 
@@ -11,10 +15,6 @@ AUIs will be attached).
 
 - K: Number of nearest neighbors to extract from original ontology for
 each new term.
-
-- UMLS Directory: Path to the 'META' directory which stores UMLS tables.
-
-- UMLS Version: Version of UMLS which contains all the AUIs referred to by the AUI sets.
 
 - Output Directory: Path to the directory used for saving output files.
 
