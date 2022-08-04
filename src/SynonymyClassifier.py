@@ -8,6 +8,8 @@ import json
 from utils import *
 import os
 
+import ipdb
+
 class SynonymyDatasetManager:
 
     def __init__(self,
@@ -155,6 +157,8 @@ class SynonymyDatasetManager:
 
             if self.test_perc > 1:
                 self.test_perc /= len(cui_num_syms_df)
+
+            ipdb.set_trace()
 
             for i, g in cui_num_syms_df.groupby('no_syms'):
                 perm_g = g.sample(len(g), random_state=np.random.RandomState(42))['cui'].values
