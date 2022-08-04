@@ -2,8 +2,6 @@ import _pickle as pickle
 import pandas as pd
 from tqdm import tqdm
 import time
-from RetrievalPipeline import RetrievalPipeline
-from UMLS import UMLS
 import numpy as np
 from glob import glob
 import json
@@ -13,8 +11,8 @@ import os
 class SynonymyDatasetManager:
 
     def __init__(self,
-                 umls: UMLS,
-                 retrieval_pipeline: RetrievalPipeline,
+                 umls,
+                 retrieval_pipeline,
                  output_dir,
                  num_candidates,
                  dev_perc,
@@ -93,7 +91,7 @@ class SynonymyDatasetManager:
         else:
             self.create_new_aui_info_df()
             self.split_dataset()
-            self.generate_all_synonym_pairs(add_gold_candidates)
+            self.generate_all_synonym_pairs()
             self.save_pickle_and_csv_datasets()
 
             json.dump({'DONE': True}, open(self.output_dir + '/dataset_generation_done.json', 'w'))
@@ -173,7 +171,7 @@ class SynonymyDatasetManager:
 
         return train, dev, test
 
-    def generate_all_synonym_pairs(self, add_gold_candidates):
+    def generate_all_synonym_pairs(self):
         # Remove AUIs which share strings and link to the same CUIs
         dedup_df = []
 
@@ -197,7 +195,7 @@ class SynonymyDatasetManager:
 
             candidate_auis = self.retrieval_pipeline.retrieved_candidates[aui][:self.num_candidates]
 
-            if add_gold_candidates:
+            if self.add_gold_candidates:
                 for syn in syns:
                     aui_samples.add((aui, syn, 1))
 
