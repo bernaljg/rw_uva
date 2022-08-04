@@ -104,7 +104,7 @@ class SynonymyDatasetManager:
             string = self.umls.aui2str[aui]
             cui = self.umls.aui2cui[aui]
             sg = self.umls.aui2sg[aui]
-            original_syns = self.umls.original_only_cui2auis[cui]
+            original_syns = self.umls.original_only_cui2auis.get(cui, [])
             num_original_syns = len(original_syns)
 
             new_cuis_plus_info.append((aui, string, cui, sg, original_syns, num_original_syns))
