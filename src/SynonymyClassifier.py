@@ -126,7 +126,7 @@ class SynonymyDatasetManager:
         # Classify each new AUI into each split
         split = []
 
-        for cui in self.new_cuis_df.cuis:
+        for cui in self.new_cuis_df['cui']:
             if cui in train:
                 split.append('train')
             elif cui in dev:
@@ -157,7 +157,7 @@ class SynonymyDatasetManager:
                 self.test_perc /= len(cui_num_syms_df)
 
             for i, g in cui_num_syms_df.groupby('no_syms'):
-                perm_g = g.sample(len(g), random_state=np.random.RandomState(42)).cuis.values
+                perm_g = g.sample(len(g), random_state=np.random.RandomState(42))['cui'].values
 
                 train.extend(perm_g[:len(g) - int(len(g) * (self.dev_perc + self.test_perc))])
                 dev.extend(perm_g[len(g) - int(len(g) * (self.dev_perc + self.test_perc)):len(g) - int(len(g) * (self.test_perc))])
