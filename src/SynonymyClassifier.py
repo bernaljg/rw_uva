@@ -141,7 +141,7 @@ class SynonymyDatasetManager:
         if stratified_method == 'synonym_presence':
 
             #Splitting Based on CUIs
-            cui_num_syms_df = self.new_cuis_df[['cuis', 'num_syms']].drop_duplicates()
+            cui_num_syms_df = self.new_cuis_df[['cuis', 'num_original_syns']].drop_duplicates()
             cui_num_syms_df['no_syms'] = [n == 0 for n in cui_num_syms_df.num_syms]
 
             train = []
@@ -175,7 +175,7 @@ class SynonymyDatasetManager:
         # Remove AUIs which share strings and link to the same CUIs
         dedup_df = []
 
-        for i, g in tqdm(self.new_cuis_df.groupby(['strings', 'cuis'])):
+        for i, g in tqdm(self.new_cuis_df.groupby(['string', 'cui'])):
 
             for j, row in g.iterrows():
                 dedup_df.append(row)
@@ -188,7 +188,7 @@ class SynonymyDatasetManager:
 
         for i, row in tqdm(dedup_df.iterrows(), total=len(dedup_df)):
             split = row['split']
-            aui = row['auis']
+            aui = row['aui']
             syns = row['original_syns']
 
             aui_samples = self.aui_splits.get(split, set())
