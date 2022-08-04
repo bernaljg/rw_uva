@@ -4,7 +4,7 @@ from tqdm import tqdm
 import time
 from RetrievalPipeline import RetrievalPipeline
 import numpy as np
-
+from SynonymyClassifier import SynonymyClassifier, SynonymyDatasetManager
 
 class UMLS:
     """
@@ -200,7 +200,10 @@ class UMLS:
                      retriever_names,
                      maximum_candidates,
                      classifier_name,
-                     candidates_to_classify=100):
+                     candidates_to_classify=100,
+                     add_gold_candidates=False,
+                     dev_perc=0.0,
+                     test_perc=0.0):
         """
         This method enables new terms to be introduced automatically into the UMLS Ontology using only their strings
         and any synonymy information available from its source ontology.
@@ -213,8 +216,11 @@ class UMLS:
             retriever_names: List of names for all retriever systems to be used in producing candidate AUIs from the
             original ontology for each new AUIs.
             maximum_candidates: Maximum # candidates per retrieval method
-            classifier_name: Name of classification system (For now a fine-tuned PLM model)
-            candidates_to_classify: # of candidates to pass through classification system.
+            classifier_name: Name of classification system (For now the location of a fine-tuned PLM model)
+            candidates_to_classify: # of candidates to pass through classification system
+            add_gold_candidates: Whether to add synonyms to retrieved candidates (Defaults to no for inference run)
+            dev_perc: Percentage of total concepts to introduce into the development set
+            test_perc: Percentage of total concepts to introduce into the test set
 
         Returns:
             predicted_synonymy: Dictionary linking each new AUI to a list of AUIs from the original ontology
@@ -235,8 +241,18 @@ class UMLS:
         # Run Candidate Generation (Retrieval)
         self.retriever_pipeline.run_retrievers()
 
-        # Create Classification Dataset
-        # Train Classification Model
+        # Create Classification Dataset Using Candidates Extracted (kNN on new AUIs)
+        self.dataset_manager = SynonymyDatasetManager(self,
+                                                      self.retrieval_pipeline,
+                                                      self.retriever_pipeline.output_dir,
+                                                      candidates_to_classify,
+                                                      dev_perc,
+                                                      test_perc,
+                                                      add_gold_candidates)
+        self.dataset_manager.create_classification_dataset()
+
+        # self.classifier = SynonymyClassifier(self, classifier_name,candidates_to_classify)
+
         # Run on Test Set
 
     def verify_umls(self,

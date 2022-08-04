@@ -6,18 +6,10 @@ from tqdm import tqdm
 import time
 from UMLS import *
 from RetrievalModule import *
+from utils import *
 
 import ipdb
 from glob import glob
-
-
-def equivalent_dict(prev_config, configs):
-    for key in prev_config.keys():
-        if prev_config[key] != configs[key]:
-            return False
-
-    return True
-
 
 class RetrievalPipeline:
     """
@@ -45,12 +37,14 @@ class RetrievalPipeline:
         self.retrieved_candidates = {}
 
         self.relevant_auis = self.ontology.relevant_auis
+        self.new_aui_synonyms = []
 
         if self.ontology.original_only_cui2auis is None:
             print('Populating original only synonyms before evaluation.')
             self.ontology.get_original_ontology_synonyms(self.original_auis)
 
         self.load_retrievers()
+        self.retrieval_done = False
 
         # Make Unique Directory for this retrieval procedure
         configs = {'UMLS Version': ontology.version,
@@ -67,17 +61,19 @@ class RetrievalPipeline:
             prev_config = json.load(open('{}/config.json'.format(dir),'r'))
 
             if equivalent_dict(prev_config, configs):
-                if os.path.exists('{}/done.json'.format(dir)):
-                    assert print('Configuration Already Done and Saved')
+                if os.path.exists('{}/retrieval_done.json'.format(dir)):
+                    print('Configuration Already Done and Saved.')
+                    self.retrieval_done = True
                 else:
                     print('Previous Run Stopped. Running Again.')
-                    new_directory_num = dir.split('/')[-1]
+
+                new_directory_num = dir.split('/')[-1]
 
         self.output_dir = output_dir + '/{}'.format(new_directory_num)
+
         if not(os.path.exists(self.output_dir)):
             os.makedirs(self.output_dir)
-
-        json.dump(configs, open(self.output_dir + '/config.json', 'w'))
+            json.dump(configs, open(self.output_dir + '/config.json', 'w'))
 
     def load_retrievers(self):
         self.retrievers = []
@@ -104,22 +100,27 @@ class RetrievalPipeline:
     def run_retrievers(self,
                        exclude=[]):
 
-        for ret_name, ret in zip(self.retriever_names, self.retrievers):
+        if self.retrieval_done:
+            self.retrieved_candidates = pickle.load(open('{}/full_pipeline_candidates.p'.format(self.output_dir), 'rb'))
+        else:
+            for ret_name, ret in zip(self.retriever_names, self.retrievers):
 
-            if ret_name not in exclude:
-                print('Retrieving {} candidates.'.format(ret_name))
-                new_candidate_dict = ret.retrieve()
-                self.eval_and_save_candidates(new_candidate_dict, ret_name)
-                self.combine_candidates(new_candidate_dict, ret.add_on_top)
+                if ret_name not in exclude:
+                    print('Retrieving {} candidates.'.format(ret_name))
+                    new_candidate_dict = ret.retrieve()
+                    self.eval_and_save_candidates(new_candidate_dict, ret_name)
+                    self.combine_candidates(new_candidate_dict, ret.add_on_top)
 
-        self.eval_and_save_candidates(self.retrieved_candidates, 'full_pipeline')
+            self.eval_and_save_candidates(self.retrieved_candidates, 'full_pipeline')
 
-        json.dump({'DONE':True}, open(self.output_dir + '/done.json', 'w'))
+            json.dump({'DONE':True}, open(self.output_dir + '/retrieval_done.json', 'w'))
 
     def evaluate_candidate_retrieval(self,
                                      candidate_dict,
                                      mode,
                                      recall_at=[1, 5, 10, 50, 100, 200, 500, 1000, 2000]):
+
+        self.new_aui_synonyms = []
 
         new_auis = []
         recall_array = []
@@ -129,6 +130,7 @@ class RetrievalPipeline:
 
             cui = self.ontology.aui2cui[new_aui]
             true_syn = set(self.ontology.original_only_cui2auis.get(cui, []))
+            self.new_aui_synonyms.append(true_syn)
 
             if len(true_syn) > 0:
                 if mode == 'CUI':
