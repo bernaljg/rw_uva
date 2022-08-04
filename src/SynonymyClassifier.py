@@ -143,7 +143,7 @@ class SynonymyDatasetManager:
 
             #Splitting Based on CUIs
             cui_num_syms_df = self.new_cuis_df[['cui', 'num_original_syns']].drop_duplicates()
-            cui_num_syms_df['no_syms'] = [n == 0 for n in cui_num_syms_df.num_syms]
+            cui_num_syms_df['no_syms'] = [n == 0 for n in cui_num_syms_df['num_original_syns']]
 
             train = []
             dev = []
