@@ -158,8 +158,6 @@ class SynonymyDatasetManager:
             if self.test_perc > 1:
                 self.test_perc /= len(cui_num_syms_df)
 
-            ipdb.set_trace()
-
             for i, g in cui_num_syms_df.groupby('no_syms'):
                 perm_g = g.sample(len(g), random_state=np.random.RandomState(42))['cui'].values
 
@@ -167,8 +165,11 @@ class SynonymyDatasetManager:
                 dev.extend(perm_g[len(g) - int(len(g) * (self.dev_perc + self.test_perc)):len(g) - int(len(g) * (self.test_perc))])
                 test.extend(perm_g[len(g) - int(len(g) * self.test_perc):])
 
-                assert (train[-1] != dev[0])
-                assert (dev[-1] != test[0])
+                if len(dev) > 0:
+                    assert (train[-1] != dev[0])
+
+                    if len(test) > 0:
+                        assert (dev[-1] != test[0])
 
             train = set(train)
             dev = set(dev)
