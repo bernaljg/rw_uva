@@ -47,9 +47,9 @@ def main():
     retriever_names = sys.argv[8:8 + num_retriever_names]
     classifier_name = sys.argv[9 + num_retriever_names]
     candidates_to_classify = int(sys.argv[10 + num_retriever_names])
-    add_gold_candidates = eval(sys.argv[10 + num_retriever_names])
-    dev_perc = eval(sys.argv[11 + num_retriever_names])
-    test_perc = eval(sys.argv[12 + num_retriever_names])
+    add_gold_candidates = eval(sys.argv[11 + num_retriever_names])
+    dev_perc = eval(sys.argv[12 + num_retriever_names])
+    test_perc = eval(sys.argv[13 + num_retriever_names])
 
     umls = UMLS(umls_dir, umls_version)
     umls.augment_umls(original_auis_filename,
