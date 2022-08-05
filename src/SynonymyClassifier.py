@@ -197,13 +197,13 @@ class SynonymyDatasetManager:
             aui = row['aui']
             syns = row['original_syns']
 
-            aui_samples = self.aui_splits.get(split, [])
+            aui_samples = self.aui_splits.get(split, set())
 
             candidate_auis = self.retrieval_pipeline.retrieved_candidates[aui][:self.num_candidates]
 
             if self.add_gold_candidates:
                 for syn in syns:
-                    aui_samples.append((aui, syn, 1))
+                    aui_samples.add((aui, syn, 1))
 
             for aui_cand in candidate_auis:
                 if aui_cand in syns:
@@ -213,9 +213,9 @@ class SynonymyDatasetManager:
 
                 aui_sample = (aui, aui_cand, label)
 
-                aui_samples.append(aui_sample)
+                aui_samples.add(aui_sample)
 
-            self.aui_splits[split] = set(aui_samples)
+            self.aui_splits[split] = aui_samples
 
     def save_pickle_and_csv_datasets(self):
 
