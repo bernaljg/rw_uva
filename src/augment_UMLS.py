@@ -53,7 +53,7 @@ def main():
                       retriever_names,
                       k,
                       None,
-                      None
+                      candidates_to_classify=None
                       )
 
 if __name__ == "__main__":
