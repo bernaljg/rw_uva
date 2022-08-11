@@ -69,7 +69,7 @@ class RetrievalModule:
                 try:
                     self.plm = AutoModel.from_pretrained(retriever_name)
                 except:
-                    assert False, print('Invalid Retriever Name. Check Documentation.')
+                    assert False, print('{} is an invalid retriever name. Check Documentation.'.format(retriever_name))
 
                 aui_vectors = self.get_plm_vectors()
                 self.populate_vector_dictionary(aui_vectors)

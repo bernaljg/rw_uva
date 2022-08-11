@@ -241,6 +241,7 @@ class UMLS:
         # Run Candidate Generation (Retrieval)
         self.retriever_pipeline.run_retrievers()
 
+        print('Creating Classification datasets from retrieval candidates')
         # Create Classification Dataset Using Candidates Extracted (kNN on new AUIs)
         self.dataset_manager = SynonymyDatasetManager(self,
                                                       self.retriever_pipeline,
